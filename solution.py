@@ -39,13 +39,17 @@ def checksum(string):
 
 def build_packet():
     #Fill in start
+    mychecksum =0
     # In the sendOnePing() method of the ICMP Ping exercise ,firstly the header of our
     # packet to be sent was made, secondly the checksum was appended to the header and
     # then finally the complete packet was sent to the destination.
 
-    # Make the header in a similar way to the ping exercise.
+    # Make the header in a similar way to the ping exercise. 
+    header = struct.pack("bbHh", ICMP_ECHO_REQUEST, 0, myChecksum, 1) 
+    data = struct.pack("d", time.time())
+    
     # Append checksum to the header.
-
+    myChecksum = checksum(str(header + data))
     # Don’t send the packet yet , just return the final packet in this function.
     #Fill in end
 
@@ -64,7 +68,10 @@ def get_route(hostname):
             destAddr = gethostbyname(hostname)
 
             #Fill in start
+            destAddr = gethostbyname(hostname)
             # Make a raw socket named mySocket
+            mySocket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)
+            mySocket.settimeout(TIMEOUT)
             #Fill in end
 
             mySocket.setsockopt(IPPROTO_IP, IP_TTL, struct.pack('I', ttl))
@@ -79,6 +86,7 @@ def get_route(hostname):
                 if whatReady[0] == []: # Timeout
                     tracelist1.append("* * * Request timed out.")
                     #Fill in start
+                    recvPacket, addr = mySocket.recvfrom(1024)
                     #You should add the list above to your all traces list
                     #Fill in end
                 recvPacket, addr = mySocket.recvfrom(1024)
@@ -95,6 +103,7 @@ def get_route(hostname):
             else:
                 #Fill in start
                 #Fetch the icmp type from the IP packet
+                types, code = recvPacket[20:22]
                 #Fill in end
                 try: #try to fetch the hostname
                     #Fill in start
