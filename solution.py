@@ -97,8 +97,8 @@ def get_route(hostname):
                     #Fill in start
                     #You should add the list above to your all traces list
                     #Fill in end
-            except timeout:
-                continue
+                except timeout:
+                    continue
 
             else:
                 #Fill in start
