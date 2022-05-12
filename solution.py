@@ -40,9 +40,11 @@ def checksum(string):
 def build_packet():
     #Fill in start
     mychecksum =0
+    
     # In the sendOnePing() method of the ICMP Ping exercise ,firstly the header of our
     # packet to be sent was made, secondly the checksum was appended to the header and
     # then finally the complete packet was sent to the destination.
+    myID = os.getpid() & 0xFFFF
 
     # Make the header in a similar way to the ping exercise. 
     header = struct.pack("bbHh", ICMP_ECHO_REQUEST, 0, myChecksum, 1) 
